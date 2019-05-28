@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.gson.JsonArray;
 import com.mp.Controller.ApiController;
@@ -32,6 +33,8 @@ public class MainFragment extends Fragment  implements ClickInterface {
 
     @BindView(R.id.fragment_recycler_view)
     RecyclerView recView;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     private Call<JsonArray> mainList;
     private ApiInterface apiService;
@@ -77,6 +80,7 @@ public class MainFragment extends Fragment  implements ClickInterface {
     }
 
     private void callService() {
+        progressBar.setVisibility(View.VISIBLE);
         mainList = apiService.loadChanges();
 
         mainList.enqueue(new Callback<JsonArray>() {
@@ -84,6 +88,7 @@ public class MainFragment extends Fragment  implements ClickInterface {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 if (response != null && response.code() == 200) {
+                    progressBar.setVisibility(View.GONE);
                     JsonArray jsonObject = response.body();
                     try {
                         listMainArray=new JSONArray(""+jsonObject);
@@ -99,6 +104,7 @@ public class MainFragment extends Fragment  implements ClickInterface {
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
                 Log.e("status", "onFailure: ");
+                progressBar.setVisibility(View.GONE);
             }
 
         });
