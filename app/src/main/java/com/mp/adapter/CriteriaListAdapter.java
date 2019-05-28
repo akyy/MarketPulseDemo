@@ -86,11 +86,11 @@ public class CriteriaListAdapter extends RecyclerView.Adapter<CriteriaListAdapte
             String strArray[] = text.split(" ");
             JSONObject variable=new JSONObject();
             if (strArray.length > 0) {
-                output=text.replaceAll("\\$","");
+                output=text.replaceAll("\\$","@");
                 for (String txt : strArray) {
                     if (txt.contains("$")) {
                         variable=jsonObject.optJSONObject(txt);
-                        txt=txt.replaceAll("\\$","");
+                        txt=txt.replaceAll("\\$","@");
                         if (variable.optString("type").equalsIgnoreCase("indicator")){
                             output= output.replaceAll(txt,"<font color='#3eb0f7'>("+variable.optString("default_value")+")</font>");
                         }else if (variable.optString("type").equalsIgnoreCase("value")){
